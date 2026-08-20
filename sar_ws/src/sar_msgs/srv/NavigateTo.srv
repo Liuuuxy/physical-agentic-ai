@@ -1,0 +1,6 @@
+float64 x
+float64 y
+float64 tolerance  # meters; 0 = use node default
+---
+bool success
+string message

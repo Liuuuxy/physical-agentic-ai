@@ -1,0 +1,4 @@
+float64 altitude
+---
+bool success
+string message

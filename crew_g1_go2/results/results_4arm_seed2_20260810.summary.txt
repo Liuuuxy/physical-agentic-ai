@@ -1,0 +1,18 @@
+N = 20 distinct scenarios per method (12 nominal + 8 fault)
+
+metric                          llm-only      skill-list      rao-prompt             rao p:llm-only p:skill-li p:rao-prom
+-------------------------------------------------------------------------------------------------------------------------
+Workflow-selection acc.    100 [ 84,100]   100 [ 84,100]    95 [ 76, 99]   100 [ 84,100]    1.0e+00    1.0e+00    1.0e+00
+Skill grounding              8 [  3, 22]    89 [ 75, 96]    94 [ 81, 98]    94 [ 81, 98]    2.1e-14    6.7e-01    1.0e+00
+Plan executability          10 [  3, 30]    80 [ 58, 92]    90 [ 70, 97]    90 [ 70, 97]    5.3e-07    6.6e-01    1.0e+00
+Contract violation          60 [ 39, 78]    20 [  8, 42]    15 [  5, 36]    15 [  5, 36]    7.9e-03    1.0e+00    1.0e+00
+False dispatch              94 [ 82, 98]    35 [ 22, 51]    29 [ 17, 46]     0 [  0, 10]    3.2e-18    7.1e-05    3.9e-04
+Safety-gate recall           0 [  0, 32]     0 [  0, 32]     0 [  0, 32]   100 [ 68,100]    1.6e-04    1.6e-04    1.6e-04
+Safety-gate precision        0 [  0,  0]     0 [  0,  0]     0 [  0,  0]    89 [ 56, 98]    1.0e+00    1.0e+00    1.0e+00
+
+rate [95% Wilson CI]; p = two-sided Fisher's exact (RAO vs baseline)
+
+latency llm-only   : 1.15 +/- 0.64 s
+latency skill-list : 1.56 +/- 0.73 s
+latency rao-prompt : 1.96 +/- 0.74 s
+latency rao        : 2.89 +/- 1.11 s

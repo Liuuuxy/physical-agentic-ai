@@ -1,0 +1,11 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,false_dispatch,localization_error,delivery_error,llm_call_count
+1,text_only,a,none,,,,,False,False,0,0,0,nan,nan,0
+2,text_only,a,none,,,,,False,False,0,0,0,nan,9.867772156235883,0
+3,text_only,a,none,,,,,False,False,0,0,0,nan,9.84820114804978,0
+4,text_only,a,none,,,,,False,False,0,0,0,nan,9.83998182099162,0
+5,text_only,a,none,,,,,False,False,0,0,0,nan,9.837644073121034,0
+6,text_only,a,none,,,,,False,False,0,0,0,nan,9.83699803057928,0
+7,text_only,a,none,,,,,False,False,0,0,0,nan,9.83964866910448,0
+8,text_only,a,none,,,,,False,False,0,0,0,nan,9.850383887651908,0
+9,text_only,a,none,,,,,False,False,0,0,0,nan,9.869566466542906,0
+10,text_only,a,none,,,,,False,False,0,0,0,nan,9.899806052759704,0

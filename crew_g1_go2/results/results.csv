@@ -1,0 +1,4 @@
+baseline,workflow_accuracy,skill_grounding,tool_hallucination,plan_executability,contract_violation,false_dispatch,safety_recall,safety_precision,planning_latency_mean
+llm-only,66.67,16.67,83.33,11.11,33.33,94.44,0.00,0.00,1.32
+skill-list,55.56,68.18,31.82,33.33,44.44,31.82,0.00,0.00,2.11
+rao,66.67,66.67,33.33,33.33,33.33,0.00,100.00,50.00,2.33

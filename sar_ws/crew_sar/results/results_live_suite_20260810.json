@@ -1,0 +1,1580 @@
+[
+ {
+  "id": "nom_sad_1",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(5.00, 5.00) success=True: Reached goal world=(5.00, 5.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 115.7468638420105,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    4.539040092266032,
+    4.941228168969273
+   ],
+   "delivery_error_m": 0.4646914725501346,
+   "mission_wall_time_s": 116.3
+  }
+ },
+ {
+  "id": "nom_sad_2",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then dispatch the rescue rover to the located person.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(5.00, 5.00) success=True: Reached goal world=(5.00, 5.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 113.96351408958435,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    4.528161436042259,
+    4.9549615876936315
+   ],
+   "delivery_error_m": 0.4739832159694915,
+   "mission_wall_time_s": 114.9
+  }
+ },
+ {
+  "id": "nom_sad_3",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "Locate the casualty by air inside the square from -5.5 to 5.5 on both axes and have the rover drive to the victim's position.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(5.00, 5.00) success=True: Reached goal world=(5.00, 5.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 116.78411173820496,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    4.514427560338202,
+    4.926425223987045
+   ],
+   "delivery_error_m": 0.4911148967649698,
+   "mission_wall_time_s": 118.3
+  }
+ },
+ {
+  "id": "nom_search_1",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_only",
+  "trace": {
+   "request": "Do an aerial sweep of the zone x from -5.5 to 5.5, y from -5.5 to 5.5 and report whether anyone is there. Air assets only \u2014 do not send the rover. Land when done.",
+   "baseline": "rao",
+   "declared_family": "search_only",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 40.159558057785034,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    -1.9827119092884635,
+    -1.9888614123034354
+   ],
+   "delivery_error_m": 9.879395196493705,
+   "mission_wall_time_s": 40.7
+  }
+ },
+ {
+  "id": "nom_search_2",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_only",
+  "trace": {
+   "request": "Take off, scan the search square between -5.5 and 5.5 on both axes for survivors, then land.",
+   "baseline": "rao",
+   "declared_family": "search_only",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 39.563310861587524,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    -1.9823089402162644,
+    -1.9887023783161708
+   ],
+   "delivery_error_m": 9.878997877786293,
+   "mission_wall_time_s": 41.9
+  }
+ },
+ {
+  "id": "nom_search_3",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "search_only",
+  "trace": {
+   "request": "Aerial reconnaissance only: search the area x in [-5.5, 5.5], y in [-5.5, 5.5], then land the drone.",
+   "baseline": "rao",
+   "declared_family": "search_only",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 39.23238945007324,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    -1.98288958383151,
+    -1.9889165859029225
+   ],
+   "delivery_error_m": 9.879559807232889,
+   "mission_wall_time_s": 39.7
+  }
+ },
+ {
+  "id": "nom_dispatch_1",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "dispatch_only",
+  "trace": {
+   "request": "Drive the rover to position x 3.0, y -2.0.",
+   "baseline": "rao",
+   "declared_family": "dispatch_only",
+   "plan": [
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "x": 3.0,
+      "y": -2.0
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "x": 3.0,
+       "y": -2.0
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(3.00, -2.00) success=True: Reached goal world=(3.00, -2.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 34.72865319252014,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    2.651695383135778,
+    -1.6866631973921182
+   ],
+   "delivery_error_m": 7.087030357557671,
+   "mission_wall_time_s": 35.3
+  }
+ },
+ {
+  "id": "nom_dispatch_2",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "dispatch_only",
+  "trace": {
+   "request": "Send the ground rover to the staging point at (7.5, 4.0).",
+   "baseline": "rao",
+   "declared_family": "dispatch_only",
+   "plan": [
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "x": 7.5,
+      "y": 4.0
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "x": 7.5,
+       "y": 4.0
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(7.50, 4.00) success=True: Reached goal world=(7.50, 4.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 79.1445484161377,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    7.141121186053567,
+    3.7052761839167503
+   ],
+   "delivery_error_m": 2.502141021865196,
+   "mission_wall_time_s": 79.7
+  }
+ },
+ {
+  "id": "nom_dispatch_3",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "dispatch_only",
+  "trace": {
+   "request": "Rover: proceed to x 0.0, y 8.0.",
+   "baseline": "rao",
+   "declared_family": "dispatch_only",
+   "plan": [
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "x": 0.0,
+      "y": 8.0
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "x": 0.0,
+       "y": 8.0
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] navigate_to(0.00, 8.00) success=True: Reached goal world=(0.00, 8.00)",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 72.11804437637329,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    0.052379259172722535,
+    7.527346335288873
+   ],
+   "delivery_error_m": 5.555756518563638,
+   "mission_wall_time_s": 73.6
+  }
+ },
+ {
+  "id": "nom_abort_1",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "abort",
+  "trace": {
+   "request": "Emergency stop: land the drone and halt the rover immediately.",
+   "baseline": "rao",
+   "declared_family": "abort",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    },
+    {
+     "robot": "tb3",
+     "skill": "stop",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "stop",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] stop success=True: Stop command received; navigation interrupted",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 6.734485626220703,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9927345173991993,
+    -1.9930078840583147
+   ],
+   "delivery_error_m": 9.889413293887962,
+   "mission_wall_time_s": 7.3
+  }
+ },
+ {
+  "id": "nom_abort_2",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "abort",
+  "trace": {
+   "request": "Abort the mission \u2014 ground the Iris and stop the TB3.",
+   "baseline": "rao",
+   "declared_family": "abort",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    },
+    {
+     "robot": "tb3",
+     "skill": "stop",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "stop",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] stop success=True: Stop command received; navigation interrupted",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 6.759357213973999,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9926014794456244,
+    -1.9928792988272703
+   ],
+   "delivery_error_m": 9.889228298422083,
+   "mission_wall_time_s": 7.4
+  }
+ },
+ {
+  "id": "nom_abort_3",
+  "fault": "none",
+  "should_block": false,
+  "expected_family": "abort",
+  "trace": {
+   "request": "Stand down all robots right now: drone lands, rover stops.",
+   "baseline": "rao",
+   "declared_family": "abort",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    },
+    {
+     "robot": "tb3",
+     "skill": "stop",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "stop",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] stop success=True: Stop command received; navigation interrupted",
+     "violations": []
+    }
+   ],
+   "refused": false,
+   "replanned": false,
+   "llm_calls": 1,
+   "latency_s": 3.1880781650543213,
+   "replan_attempted": false,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9936683818818601,
+    -1.9934053775803562
+   ],
+   "delivery_error_m": 9.890354706020602,
+   "mission_wall_time_s": 3.7
+  }
+ },
+ {
+  "id": "fault_iris_unavailable_1",
+  "fault": "iris_unavailable",
+  "should_block": true,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] no_target_fix",
+     "violations": [
+      "no_target_fix"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 3.264368772506714,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.993903820205677,
+    -1.9935640527805099
+   ],
+   "delivery_error_m": 9.890633387535468,
+   "mission_wall_time_s": 3.8
+  }
+ },
+ {
+  "id": "fault_iris_unavailable_2",
+  "fault": "iris_unavailable",
+  "should_block": true,
+  "expected_family": "search_only",
+  "trace": {
+   "request": "Take off and sweep the zone x from -5.5 to 5.5, y from -5.5 to 5.5 for survivors, then land.",
+   "baseline": "rao",
+   "declared_family": "search_only",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 4.586375951766968,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9934458710494027,
+    -1.9933114306764237
+   ],
+   "delivery_error_m": 9.890130935317664,
+   "mission_wall_time_s": 5.1
+  }
+ },
+ {
+  "id": "fault_tb3_unavailable_1",
+  "fault": "tb3_unavailable",
+  "should_block": true,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then dispatch the rescue rover to the located person.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 42.22542977333069,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    5.0,
+    5.0
+   ],
+   "rover_final_pose": [
+    -1.98136761459174,
+    -1.9884023669419455
+   ],
+   "delivery_error_m": 9.878120338017256,
+   "mission_wall_time_s": 44.9
+  }
+ },
+ {
+  "id": "fault_tb3_unavailable_2",
+  "fault": "tb3_unavailable",
+  "should_block": true,
+  "expected_family": "dispatch_only",
+  "trace": {
+   "request": "Drive the rover to position x 3.0, y -2.0.",
+   "baseline": "rao",
+   "declared_family": "dispatch_only",
+   "plan": [
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "x": 3.0,
+      "y": -2.0
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "x": 3.0,
+       "y": -2.0
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] robot_busy",
+     "violations": [
+      "robot_busy"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 3.4428625106811523,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9936059097293604,
+    -1.9933851190335241
+   ],
+   "delivery_error_m": 9.890296206065871,
+   "mission_wall_time_s": 4.0
+  }
+ },
+ {
+  "id": "fault_out_of_bounds_1",
+  "fault": "out_of_bounds",
+  "should_block": true,
+  "expected_family": "dispatch_only",
+  "trace": {
+   "request": "Drive the rover to the old ranger station at x 40.0, y 45.0.",
+   "baseline": "rao",
+   "declared_family": "dispatch_only",
+   "plan": [
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "x": 40.0,
+      "y": 45.0
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "x": 40.0,
+       "y": 45.0
+      }
+     },
+     "dispatched": false,
+     "grounded": false,
+     "result": "[REFUSED] unknown_location",
+     "violations": [
+      "unknown_location"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 3.1185755729675293,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.993150173356645,
+    -1.9931570033938866
+   ],
+   "delivery_error_m": 9.889812648439555,
+   "mission_wall_time_s": 5.9
+  }
+ },
+ {
+  "id": "fault_out_of_bounds_2",
+  "fault": "out_of_bounds",
+  "should_block": true,
+  "expected_family": "search_only",
+  "trace": {
+   "request": "Sweep the zone x from 50 to 60, y from 50 to 60 for survivors, then land.",
+   "baseline": "rao",
+   "declared_family": "search_only",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": 50,
+      "x_max": 60,
+      "y_min": 50,
+      "y_max": 60
+     }
+    },
+    {
+     "robot": "iris",
+     "skill": "land",
+     "args": {}
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": 50,
+       "x_max": 60,
+       "y_min": 50,
+       "y_max": 60
+      }
+     },
+     "dispatched": false,
+     "grounded": false,
+     "result": "[REFUSED] unknown_location",
+     "violations": [
+      "unknown_location"
+     ]
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "land",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] land success=True: Landing",
+     "violations": []
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 18.901753902435303,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9892552937303802,
+    -1.9913435605854146
+   ],
+   "delivery_error_m": 9.88577636521671,
+   "mission_wall_time_s": 19.5
+  }
+ },
+ {
+  "id": "fault_nan_transmission_1",
+  "fault": "nan_transmission",
+  "should_block": true,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "Locate the casualty by air inside the square from -5.5 to 5.5 on both axes and have the rover drive to the victim's position.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE][FAULT:nan_transmission] Victim detected but coordinates corrupted (NaN transmission).",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] no_target_fix",
+     "violations": [
+      "no_target_fix"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 42.58473443984985,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": [
+    NaN,
+    NaN
+   ],
+   "rover_final_pose": [
+    -1.9819669913865965,
+    -1.9886011859464565
+   ],
+   "delivery_error_m": 9.878684609047108,
+   "mission_wall_time_s": 43.2
+  }
+ },
+ {
+  "id": "fault_missed_detection_1",
+  "fault": "missed_detection",
+  "should_block": true,
+  "expected_family": "search_and_dispatch",
+  "trace": {
+   "request": "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located.",
+   "baseline": "rao",
+   "declared_family": "search_and_dispatch",
+   "plan": [
+    {
+     "robot": "iris",
+     "skill": "takeoff",
+     "args": {}
+    },
+    {
+     "robot": "iris",
+     "skill": "search_target",
+     "args": {
+      "x_min": -5.5,
+      "x_max": 5.5,
+      "y_min": -5.5,
+      "y_max": 5.5
+     }
+    },
+    {
+     "robot": "tb3",
+     "skill": "navigate_to",
+     "args": {
+      "target": "victim"
+     }
+    }
+   ],
+   "steps": [
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "takeoff",
+      "args": {}
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE] takeoff success=True: Reached altitude",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "iris",
+      "skill": "search_target",
+      "args": {
+       "x_min": -5.5,
+       "x_max": 5.5,
+       "y_min": -5.5,
+       "y_max": 5.5
+      }
+     },
+     "dispatched": true,
+     "grounded": true,
+     "result": "[LIVE][FAULT:missed_detection] Search area covered, victim not detected.",
+     "violations": []
+    },
+    {
+     "step": {
+      "robot": "tb3",
+      "skill": "navigate_to",
+      "args": {
+       "target": "victim"
+      }
+     },
+     "dispatched": false,
+     "grounded": true,
+     "result": "[REFUSED] no_target_fix",
+     "violations": [
+      "no_target_fix"
+     ]
+    }
+   ],
+   "refused": true,
+   "replanned": false,
+   "llm_calls": 2,
+   "latency_s": 15.21720027923584,
+   "replan_attempted": true,
+   "parse_problems": []
+  },
+  "outcome": {
+   "victim_fix": null,
+   "rover_final_pose": [
+    -1.9896537226976037,
+    -1.9914377387688715
+   ],
+   "delivery_error_m": 9.886124661276634,
+   "mission_wall_time_s": 17.9
+  }
+ }
+]

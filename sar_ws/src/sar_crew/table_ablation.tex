@@ -1,0 +1,53 @@
+\begin{table}[h]
+\centering
+\caption{Ablation study ($N=10$ per config., Scenario A).
+Run~Set~1: nominal (no faults).
+Run~Set~2: fault-injected ($N=20$ full, $N=10$ others; mixed: \textit{corrupted\_coords},
+\textit{nan\_trans.}, \textit{missed\_det.}, \textit{blocked\_corr.}).
+$^\dagger$~Guaranteed by design.
+$^*$~Rover never dispatched; zero by construction.
+Dashes: module not executed in this config.}
+\label{tab:ablation}
+\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Metric}
+  & \begin{tabular}{c}\textbf{Full Sys.}\\\textbf{(Ours)}\end{tabular}
+  & \begin{tabular}{c}\textbf{No}\\\textbf{Gate}\end{tabular}
+  & \begin{tabular}{c}\textbf{LLM}\\\textbf{Only}\end{tabular} \\
+\midrule
+\multicolumn{4}{l}{\textit{Reliability (Run Set 1, N\,=\,10)}} \\
+Grounding rate              & 100\%          & 100\%          & 100\%  \\
+Plan executability          & \textbf{100\%} & 0\%$^*$        & 0\%    \\
+Rover dispatched            & 10/10          & 0/10           & 10/10  \\
+Rescue completed (err\,$<$\,1\,m) & \textbf{10/10} & 0/10      & 0/10   \\
+\midrule
+\multicolumn{4}{l}{\textit{Accuracy (Run Set 1, N\,=\,10)}} \\
+Delivery error (m)      & $\mathbf{0.50{\pm}0.00}$ & $9.85{\pm}0.01$ & $5.09{\pm}2.33$ \\
+Localization error (m)  & $0.00{\pm}0.00$          & $0.00{\pm}0.00$ & $4.21{\pm}2.42$ \\
+\midrule
+\multicolumn{4}{l}{\textit{Fault robustness (Run Set 2)}} \\
+False dispatch              & 25\%           & 0\%$^*$        & 0\%$^*$  \\
+Delivery error (m)      & $3.69{\pm}4.11$ & $9.85{\pm}0.01$ & $8.71{\pm}2.26$ \\
+\midrule
+\multicolumn{4}{l}{\textit{Latency (Run Set 1, N\,=\,10)}} \\
+Planning latency (s)    & $1.5{\pm}0.4$   & $1.3{\pm}0.4$   & $8.0{\pm}0.9$   \\
+Search time (s)         & $24.3{\pm}0.9$  & $24.0{\pm}0.7$  & --              \\
+Nav.\ time (s)          & $72.3{\pm}0.8$  & --              & --              \\
+Mission time (s)        & $108.1{\pm}3.5$ & $33.5{\pm}2.5$  & --              \\
+LLM calls               & $2.0{\pm}0.0$   & $2.0{\pm}0.0$   & --              \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+\noindent\footnotesize
+\textit{No Gate}: drone locates victim correctly (grounding\,=\,100\%, loc.\ error\,=\,0\,m) but rover
+is never dispatched---workflow contract absent, so ground agent receives no coordinates.
+\textit{LLM-Only}: no perception tools; agents estimate victim from zone description.
+LLM produces coordinates in 10/10 runs (grounding\,=\,100\%) but with a mean localization error of 4.21\,m;
+7/10 navigation attempts timeout (rover sent to rubble-blocked locations).
+False dispatch (Run\,Set\,2) for \textit{Full}: all 5 positive cases arise from
+\textit{nan\_transmission} faults, where the gate detects NaN coordinates but the LLM
+recovers approximate position from the message text and dispatches anyway.
+\end{table}

@@ -1,0 +1,4 @@
+Held-plan ablation: one rao-prompt planner sample per scenario, identical plans dispatched both ways (N=20)
+false_dispatch    no-gate  25.7% (9/35) [14,42]   gate   0.0% (0/35) [0,10]   p=2.17e-03
+safety_recall     no-gate   0.0% (0/8) [0,32]   gate 100.0% (8/8) [68,100]   p=1.55e-04
+safety_precision  no-gate   0.0% (0/0) [0,0]   gate 100.0% (8/8) [68,100]   p=1.00e+00

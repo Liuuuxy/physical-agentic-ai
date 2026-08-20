@@ -1,0 +1,11 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,plan_executability,false_dispatch,localization_error,delivery_error,llm_call_count,tool_ref_count,tool_hallucination_count,tool_hallucination_rate
+1,no_gate,a,none,1.84,23.86,,39.49,True,True,1,1,1,0,0.0,9.876024266417977,2,0,0,nan
+2,no_gate,a,none,1.42,23.68,,32.5,True,True,1,1,1,0,0.0,9.861820700121772,2,0,0,nan
+3,no_gate,a,none,2.24,23.47,,35.15,True,True,1,1,1,0,0.0,9.84992662422044,2,0,0,nan
+4,no_gate,a,none,1.28,24.91,,33.53,True,True,1,1,1,0,0.0,9.843041995294378,2,0,0,nan
+5,no_gate,a,none,1.04,23.83,,32.69,True,True,1,1,1,0,0.0,9.8396289348256,2,0,0,nan
+6,no_gate,a,none,1.07,23.33,,31.59,True,True,1,1,1,0,0.0,9.838439319084506,2,0,0,nan
+7,no_gate,a,none,1.01,25.19,,34.47,True,True,1,1,1,0,0.0,9.837427242484274,2,0,0,nan
+8,no_gate,a,none,0.96,23.2,,31.08,True,True,1,1,1,0,0.0,9.836863627969361,2,0,0,nan
+9,no_gate,a,none,0.95,23.53,,31.47,True,True,1,1,1,0,0.0,9.837197463290574,2,0,0,nan
+10,no_gate,a,none,1.15,24.93,,32.88,True,True,1,1,1,0,0.0,9.838781404200299,2,0,0,nan

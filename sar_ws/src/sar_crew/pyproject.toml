@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sar_crew"
+version = "0.1.0"
+description = "CrewAI agents coordinating the IRIS drone and TurtleBot3 rover for search-and-rescue"
+requires-python = ">=3.10"
+dependencies = [
+    "crewai",
+    "crewai-tools",
+    "python-dotenv",
+]
+
+[tool.setuptools.packages.find]
+include = ["sar_crew*"]

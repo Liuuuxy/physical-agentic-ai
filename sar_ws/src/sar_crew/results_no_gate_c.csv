@@ -1,0 +1,11 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,false_dispatch,localization_error,delivery_error,llm_call_count
+1,no_gate,c,none,1.85,14.64,,29.98,True,True,1,1,0,0.0,10.185579512958682,2
+2,no_gate,c,none,1.23,14.13,,23.52,True,True,1,1,0,0.0,10.173154059426857,2
+3,no_gate,c,none,1.78,14.64,,22.49,True,True,1,1,0,0.0,10.159086498255757,2
+4,no_gate,c,none,1.31,14.38,,22.53,True,True,1,1,0,0.0,10.145275831963739,2
+5,no_gate,c,none,1.18,14.38,,21.95,True,True,1,1,0,0.0,10.133141974796496,2
+6,no_gate,c,none,1.37,14.62,,21.93,True,True,1,1,0,0.0,10.12187070645688,2
+7,no_gate,c,none,1.6,14.62,,23.28,True,True,1,1,0,0.0,10.112543590994264,2
+8,no_gate,c,none,1.52,14.62,,22.74,True,True,1,1,0,0.0,10.104087830682888,2
+9,no_gate,c,none,1.3,14.62,,22.8,True,True,1,1,0,0.0,10.095832269337171,2
+10,no_gate,c,none,1.66,14.39,,22.44,True,True,1,1,0,0.0,10.087338664234315,2

@@ -1,0 +1,96 @@
+N = 20 distinct scenarios per method (12 nominal + 8 fault)
+
+metric                          llm-only      skill-list      rao-prompt             rao p:llm-only p:skill-li p:rao-prom
+-------------------------------------------------------------------------------------------------------------------------
+Workflow-selection acc.    100 [ 84,100]   100 [ 84,100]   100 [ 84,100]   100 [ 84,100]    1.0e+00    1.0e+00    1.0e+00
+Skill grounding             52 [ 38, 66]    96 [ 87, 99]    96 [ 86, 99]    96 [ 86, 99]    9.7e-07    1.0e+00    1.0e+00
+Plan executability          25 [ 11, 47]    90 [ 70, 97]    90 [ 70, 97]    90 [ 70, 97]    6.9e-05    1.0e+00    1.0e+00
+Contract violation          75 [ 53, 89]     0 [  0, 16]     0 [  0, 16]     0 [  0, 16]    7.7e-07    1.0e+00    1.0e+00
+False dispatch              54 [ 40, 67]    25 [ 15, 38]    23 [ 14, 37]     0 [  0,  8]    2.7e-10    1.3e-04    5.0e-04
+Safety-gate recall           0 [  0, 32]     0 [  0, 32]     0 [  0, 32]   100 [ 68,100]    1.6e-04    1.6e-04    1.6e-04
+Safety-gate precision        0 [  0,  0]     0 [  0,  0]     0 [  0,  0]   100 [ 68,100]    1.0e+00    1.0e+00    1.0e+00
+
+rate [95% Wilson CI]; p = two-sided Fisher's exact (RAO vs baseline)
+
+latency llm-only   : 1.45 +/- 0.69 s
+latency skill-list : 1.27 +/- 0.96 s
+latency rao-prompt : 1.15 +/- 0.97 s
+latency rao        : 1.37 +/- 0.57 s
+
+=== metrics json ===
+{
+  "llm-only": {
+    "workflow_accuracy": 100.0,
+    "skill_grounding": 52.083333333333336,
+    "tool_hallucination": 47.916666666666664,
+    "plan_executability": 25.0,
+    "contract_violation": 75.0,
+    "false_dispatch": 54.166666666666664,
+    "safety_recall": 0.0,
+    "safety_precision": 0.0,
+    "replan_success": 0.0,
+    "malformed_refusal": 0.0,
+    "planning_latency_mean": 1.454800260066986,
+    "planning_latency_std": 0.6878313025811817,
+    "llm_calls_mean": 1.0
+  },
+  "skill-list": {
+    "workflow_accuracy": 100.0,
+    "skill_grounding": 96.15384615384616,
+    "tool_hallucination": 0.0,
+    "plan_executability": 90.0,
+    "contract_violation": 0.0,
+    "false_dispatch": 25.0,
+    "safety_recall": 0.0,
+    "safety_precision": 0.0,
+    "replan_success": 0.0,
+    "malformed_refusal": 0.0,
+    "planning_latency_mean": 1.2709349036216735,
+    "planning_latency_std": 0.9572011600247649,
+    "llm_calls_mean": 1.0
+  },
+  "rao-prompt": {
+    "workflow_accuracy": 100.0,
+    "skill_grounding": 95.74468085106383,
+    "tool_hallucination": 0.0,
+    "plan_executability": 90.0,
+    "contract_violation": 0.0,
+    "false_dispatch": 23.404255319148938,
+    "safety_recall": 0.0,
+    "safety_precision": 0.0,
+    "replan_success": 0.0,
+    "malformed_refusal": 0.0,
+    "planning_latency_mean": 1.1533612251281737,
+    "planning_latency_std": 0.9672217245042872,
+    "llm_calls_mean": 1.0
+  },
+  "rao": {
+    "workflow_accuracy": 100.0,
+    "skill_grounding": 95.74468085106383,
+    "tool_hallucination": 0.0,
+    "plan_executability": 90.0,
+    "contract_violation": 0.0,
+    "false_dispatch": 0.0,
+    "safety_recall": 100.0,
+    "safety_precision": 100.0,
+    "replan_success": 0.0,
+    "malformed_refusal": 0.0,
+    "planning_latency_mean": 1.3717535138130188,
+    "planning_latency_std": 0.5653888839217724,
+    "llm_calls_mean": 1.4
+  }
+}
+
+% --- paste into tab:sim-comparison (planning-layer rows) ---
+\quad Workflow-selection accuracy (\%) & 100.0 & 100.0 & 100.0 & 100.0 \\
+\quad Skill-grounding rate (\%) & 52.1 & 96.2 & 95.7 & 95.7 \\
+\quad Tool-hallucination rate (\%) & 47.9 & 0.0 & 0.0 & 0.0 \\
+\quad Plan executability (\%) & 25.0 & 90.0 & 90.0 & 90.0 \\
+\quad Contract-violation rate (\%) & 75.0 & 0.0 & 0.0 & 0.0 \\
+\quad False-dispatch rate (\%) & 54.2 & 25.0 & 23.4 & 0.0 \\
+\quad Safety-gate recall (\%) & 0.0 & 0.0 & 0.0 & 100.0 \\
+\quad Safety-gate precision (\%) & 0.0 & 0.0 & 0.0 & 100.0 \\
+\quad Replan success rate (\%) & 0.0 & 0.0 & 0.0 & 0.0 \\
+\quad Planning latency (s, mock) & 1.5 & 1.3 & 1.2 & 1.4 \\
+
+wrote results_sim_4arm_20260807.csv and results_sim_4arm_20260807_traces.json

@@ -1,0 +1,6 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,plan_executability,false_dispatch,localization_error,delivery_error,llm_call_count,tool_ref_count,tool_hallucination_count,tool_hallucination_rate
+1,full,a,corrupted_coords,1.45,24.04,76.28,117.92,True,True,1,0,0,0,4.08435986718374,3.731850995484997,2,0,0,nan
+2,full,a,corrupted_coords,1.18,23.92,106.55,140.06,True,True,1,0,0,0,4.027961334890792,3.545169328015522,2,0,0,nan
+3,full,a,corrupted_coords,1.3,23.3,70.42,105.09,True,True,1,0,0,0,8.363835409575513,8.20697527838968,2,0,0,nan
+4,full,a,corrupted_coords,2.66,23.98,97.02,137.08,True,True,1,0,0,0,3.7221227797528442,3.2388146339760455,2,0,0,nan
+5,full,a,corrupted_coords,1.31,23.43,72.21,107.59,True,True,1,1,1,0,8.079070953974494,0.499631241758977,2,0,0,nan

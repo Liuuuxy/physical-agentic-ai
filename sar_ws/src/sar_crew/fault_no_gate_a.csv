@@ -1,0 +1,11 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,plan_executability,false_dispatch,localization_error,delivery_error,llm_call_count,tool_ref_count,tool_hallucination_count,tool_hallucination_rate
+1,no_gate,a,blocked_corridor,1.77,23.4,,40.22,True,True,1,1,1,0,0.0,9.876065952572217,2,0,0,nan
+2,no_gate,a,nan_transmission,1.11,24.35,,32.55,True,False,0,0,0,0,nan,9.861845760849503,2,0,0,nan
+3,no_gate,a,corrupted_coords,0.97,23.87,,31.93,True,False,1,0,0,0,3.0364597958916018,9.850670610587033,2,0,0,nan
+4,no_gate,a,missed_detection,2.24,23.41,,,True,False,0,0,0,0,nan,9.843994524152507,2,0,0,nan
+5,no_gate,a,blocked_corridor,0.91,24.07,,32.37,True,True,1,1,1,0,0.0,9.839679643057808,2,0,0,nan
+6,no_gate,a,blocked_corridor,1.0,23.3,,30.89,True,True,1,1,1,0,0.0,9.83839267460639,2,0,0,nan
+7,no_gate,a,corrupted_coords,1.05,25.51,,33.91,True,False,1,0,0,0,5.8837081653595575,9.837530434139891,2,0,0,nan
+8,no_gate,a,nan_transmission,1.06,23.34,,34.45,True,False,0,0,0,0,nan,9.836868789849683,2,0,0,nan
+9,no_gate,a,nan_transmission,3.1,23.39,,34.32,True,False,0,0,0,0,nan,9.837225594048903,2,0,0,nan
+10,no_gate,a,blocked_corridor,1.11,24.67,,32.63,True,True,1,1,1,0,0.0,9.838806749309242,2,0,0,nan

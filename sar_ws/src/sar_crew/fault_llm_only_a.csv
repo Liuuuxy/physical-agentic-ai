@@ -1,0 +1,11 @@
+run,config,scenario,fault,planning_latency_s,search_duration_s,navigate_duration_s,total_duration_s,victim_found,mission_success,grounding_ok,assignment_ok,plan_executability,false_dispatch,localization_error,delivery_error,llm_call_count,tool_ref_count,tool_hallucination_count,tool_hallucination_rate
+1,llm_only,a,blocked_corridor,,,,,False,False,1,0,0,0,2.23606797749979,nan,0,0,0,nan
+2,llm_only,a,missed_detection,,,,,False,False,1,0,0,0,2.23606797749979,9.866138782727498,0,0,0,nan
+3,llm_only,a,missed_detection,,,,,False,False,1,0,0,0,8.0,9.847667737861077,0,0,0,nan
+4,llm_only,a,missed_detection,,,,,False,False,1,0,0,0,5.0,9.83985654680769,0,0,0,nan
+5,llm_only,a,corrupted_coords,13.03,,103.87,116.9,False,True,1,0,0,0,2.692582403567252,2.88115610352952,0,0,0,nan
+6,llm_only,a,corrupted_coords,9.15,,300.0,309.16,False,False,1,0,0,0,5.656854249492381,8.941535533786125,0,0,0,nan
+7,llm_only,a,nan_transmission,,,,,False,False,1,0,0,0,2.23606797749979,9.67748755702279,0,0,0,nan
+8,llm_only,a,blocked_corridor,,,,,False,False,1,0,0,0,5.656854249492381,9.686686846024307,0,0,0,nan
+9,llm_only,a,corrupted_coords,8.67,,44.22,52.89,False,True,1,0,0,0,8.0,8.048695441956514,0,0,0,nan
+10,llm_only,a,nan_transmission,,,,,False,False,1,0,0,0,2.23606797749979,9.576852149483484,0,0,0,nan

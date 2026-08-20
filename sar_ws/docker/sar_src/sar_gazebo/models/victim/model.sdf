@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="victim">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0 0 0 0</pose>
+
+      <!-- body -->
+      <visual name="body_visual">
+        <pose>0 0 0.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.18</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.9 0.1 0.1 1</ambient>
+          <diffuse>0.9 0.1 0.1 1</diffuse>
+        </material>
+      </visual>
+      <collision name="body_collision">
+        <pose>0 0 0.5 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.18</radius>
+            <length>1.0</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <!-- head -->
+      <visual name="head_visual">
+        <pose>0 0 1.15 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+        <material>
+          <ambient>0.9 0.7 0.6 1</ambient>
+          <diffuse>0.9 0.7 0.6 1</diffuse>
+        </material>
+      </visual>
+      <collision name="head_collision">
+        <pose>0 0 1.15 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.15</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <!-- bright marker flag so it's visible from the air -->
+      <visual name="flag_pole">
+        <pose>0.2 0 0.9 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.015</radius>
+            <length>1.8</length>
+          </cylinder>
+        </geometry>
+        <material>
+          <ambient>0.3 0.3 0.3 1</ambient>
+          <diffuse>0.3 0.3 0.3 1</diffuse>
+        </material>
+      </visual>
+      <visual name="flag">
+        <pose>0.35 0 1.7 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.3 0.01 0.2</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1 0.85 0 1</ambient>
+          <diffuse>1 0.85 0 1</diffuse>
+          <emissive>0.5 0.4 0 1</emissive>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

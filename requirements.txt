@@ -1,0 +1,12 @@
+# Planning/evaluation layer (works on any Python 3.10-3.13; no ROS needed).
+#   python3 -m pip install -r requirements.txt
+crewai>=0.80.0
+crewai-tools>=0.33.0
+pydantic>=2.0.0
+pyyaml
+pytest
+
+# For the REAL-ROBOT path only, install into the system Python 3.10 that
+# provides rclpy -- not a conda Python -- and additionally pin:
+#   numpy<2.0     (transforms3d in the Go2 autonomy stack uses np.maximum_sctype,
+#                  removed in NumPy 2.0)

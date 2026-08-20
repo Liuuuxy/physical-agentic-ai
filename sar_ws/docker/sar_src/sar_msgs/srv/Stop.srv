@@ -1,0 +1,4 @@
+# Stop the rover mid-navigation
+---
+bool success
+string message

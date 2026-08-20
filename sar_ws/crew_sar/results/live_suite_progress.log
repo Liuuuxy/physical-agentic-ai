@@ -1,0 +1,1861 @@
+[1/20] nom_sad_1 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5    │
+│  to 5.5. Fly the drone over the zone and send the ground rover to the        │
+│  victim once located."                                                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=0.4646914725501346 t=116.3s
+[2/20] nom_sad_2 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then    │
+│  dispatch the rescue rover to the located person."                           │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=0.4739832159694915 t=114.9s
+[3/20] nom_sad_3 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Locate the casualty by air inside the square from -5.5 to 5.5 on both    │
+│  axes and have the rover drive to the victim's position."                    │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=0.4911148967649698 t=118.3s
+[4/20] nom_search_1 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Do an aerial sweep of the zone x from -5.5 to 5.5, y from -5.5 to 5.5    │
+│  and report whether anyone is there. Air assets only — do not send the       │
+│  rover. Land when done."                                                     │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":-5.5,  │
+│  "x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"iris","skill":"land","arg  │
+│  s":{}}]}                                                                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=9.879395196493705 t=40.7s
+[5/20] nom_search_2 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Take off, scan the search square between -5.5 and 5.5 on both axes for   │
+│  survivors, then land."                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":-5.5,  │
+│  "x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"iris","skill":"land","arg  │
+│  s":{}}]}                                                                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=9.878997877786293 t=41.9s
+[6/20] nom_search_3 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Aerial reconnaissance only: search the area x in [-5.5, 5.5], y in       │
+│  [-5.5, 5.5], then land the drone."                                          │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":-5.5,  │
+│  "x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"iris","skill":"land","arg  │
+│  s":{}}]}                                                                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=3 err=9.879559807232889 t=39.7s
+[7/20] nom_dispatch_1 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Drive the rover to position x 3.0, y -2.0."                              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":3.0,"y":-2.0}}]}                                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=1 err=7.087030357557671 t=35.3s
+[8/20] nom_dispatch_2 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Send the ground rover to the staging point at (7.5, 4.0)."               │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":7.5,"y":4.0}}]}                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=1 err=2.502141021865196 t=79.7s
+[9/20] nom_dispatch_3 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Rover: proceed to x 0.0, y 8.0."                                         │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":0.0,"y":8.0}}]}                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=1 err=5.555756518563638 t=73.6s
+[10/20] nom_abort_1 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Emergency stop: land the drone and halt the rover immediately."          │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"abort","steps":[{"robot":"iris","skill":"land","args":  │
+│  {}},{"robot":"tb3","skill":"stop","args":{}}]}                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=2 err=9.889413293887962 t=7.3s
+[11/20] nom_abort_2 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Abort the mission — ground the Iris and stop the TB3."                   │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"abort","steps":[{"robot":"iris","skill":"land","args":  │
+│  {}},{"robot":"tb3","skill":"stop","args":{}}]}                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=2 err=9.889228298422083 t=7.4s
+[12/20] nom_abort_3 (fault=none) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Stand down all robots right now: drone lands, rover stops."              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"abort","steps":[{"robot":"iris","skill":"land","args":  │
+│  {}},{"robot":"tb3","skill":"stop","args":{}}]}                              │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=False steps=2 err=9.890354706020602 t=3.7s
+[13/20] fault_iris_unavailable_1 (fault=iris_unavailable) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5    │
+│  to 5.5. Fly the drone over the zone and send the ground rover to the        │
+│  victim once located."                                                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5    │
+│  to 5.5. Fly the drone over the zone and send the ground rover to the        │
+│  victim once located."                                                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: no_target_fix, robot_busy).    │
+│  Produce a corrected plan using ONLY valid skill names and arguments and     │
+│  the correct workflow family and ordering.                                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.890633387535468 t=3.8s
+[14/20] fault_iris_unavailable_2 (fault=iris_unavailable) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Take off and sweep the zone x from -5.5 to 5.5, y from -5.5 to 5.5 for   │
+│  survivors, then land."                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":-5.5,  │
+│  "x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"iris","skill":"land","arg  │
+│  s":{}}]}                                                                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Take off and sweep the zone x from -5.5 to 5.5, y from -5.5 to 5.5 for   │
+│  survivors, then land."                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: robot_busy). Produce a         │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":-5.5,  │
+│  "x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"iris","skill":"land","arg  │
+│  s":{}}]}                                                                    │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.890130935317664 t=5.1s
+[15/20] fault_tb3_unavailable_1 (fault=tb3_unavailable) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then    │
+│  dispatch the rescue rover to the located person."                           │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then    │
+│  dispatch the rescue rover to the located person."                           │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: robot_busy). Produce a         │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.878120338017256 t=44.9s
+[16/20] fault_tb3_unavailable_2 (fault=tb3_unavailable) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Drive the rover to position x 3.0, y -2.0."                              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":3.0,"y":-2.0}}]}                                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Drive the rover to position x 3.0, y -2.0."                              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: robot_busy). Produce a         │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":3.0,"y":-2.0}}]}                                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=1 err=9.890296206065871 t=4.0s
+[17/20] fault_out_of_bounds_1 (fault=out_of_bounds) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Drive the rover to the old ranger station at x 40.0, y 45.0."            │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":40.0,"y":45.0}}]}                                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Drive the rover to the old ranger station at x 40.0, y 45.0."            │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: unknown_location). Produce a   │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"dispatch_only","steps":[{"robot":"tb3","skill":"naviga  │
+│  te_to","args":{"x":40.0,"y":45.0}}]}                                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=1 err=9.889812648439555 t=5.9s
+[18/20] fault_out_of_bounds_2 (fault=out_of_bounds) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Sweep the zone x from 50 to 60, y from 50 to 60 for survivors, then      │
+│  land."                                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":50,"x  │
+│  _max":60,"y_min":50,"y_max":60}},{"robot":"iris","skill":"land","args":{}}  │
+│  ]}                                                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Sweep the zone x from 50 to 60, y from 50 to 60 for survivors, then      │
+│  land."                                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: unknown_location). Produce a   │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_only","steps":[{"robot":"iris","skill":"takeoff  │
+│  ","args":{}},{"robot":"iris","skill":"search_target","args":{"x_min":50,"x  │
+│  _max":60,"y_min":50,"y_max":60}},{"robot":"iris","skill":"land","args":{}}  │
+│  ]}                                                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.88577636521671 t=19.5s
+[19/20] fault_nan_transmission_1 (fault=nan_transmission) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Locate the casualty by air inside the square from -5.5 to 5.5 on both    │
+│  axes and have the rover drive to the victim's position."                    │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "Locate the casualty by air inside the square from -5.5 to 5.5 on both    │
+│  axes and have the rover drive to the victim's position."                    │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: no_target_fix). Produce a      │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.878684609047108 t=43.2s
+[20/20] fault_missed_detection_1 (fault=missed_detection) -- restarting sim...
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5    │
+│  to 5.5. Fly the drone over the zone and send the ground rover to the        │
+│  victim once located."                                                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5    │
+│  to 5.5. Fly the drone over the zone and send the ground rover to the        │
+│  victim once located."                                                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (Iris or TB3)                                               │
+│    - the exact skill (use the iris_list_skills and tb3_list_skills           │
+│  tools to check available options)                                           │
+│    - any relevant parameters (search zone bounds, coordinates,     target    │
+│  binding)                                                                    │
+│                                                                              │
+│  If the request cannot be fulfilled with the available skills, explain why.  │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["search_and_dispatch","search_only","dispatch_only","abort"], "steps":     │
+│  [{"robot":"iris"|"tb3","skill":str,"args":{}}]}.                            │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "search_and_dispatch", "steps": [{"robot": "iris",      │
+│  "skill": "<iris_skill>", "args": {}}, {"robot": "tb3", "skill":             │
+│  "<tb3_skill>", "args": {"<arg_name>": "<value>"}}]}                         │
+│                                                                              │
+│  Available Iris drone skills (use these EXACT names, do not invent others):  │
+│  takeoff, search_target, get_coordinates, land. search_target takes args     │
+│  x_min, x_max, y_min, y_max (and optional altitude, default 5.0).            │
+│  TB3 rover skills: navigate_to, stop. navigate_to takes either {"target":    │
+│  "victim"} to drive to the drone-published victim fix, or explicit numeric   │
+│  "x" and "y" stated in the request.                                          │
+│  Operational area (world frame): x in [-6.0, 10.0], y in [-6.0, 10.0].       │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - search_and_dispatch: Iris takeoff, then Iris search_target over the       │
+│  exact zone stated in the request, then TB3 navigate_to with args            │
+│  {"target": "victim"} once the fix is published (the rover goal must bind    │
+│  to the fix, never literal coordinates). Iris get_coordinates/search_target  │
+│  must NOT come before Iris takeoff. TB3 navigate_to must NOT come before     │
+│  Iris get_coordinates/search_target.                                         │
+│  - search_only: an Iris-only aerial survey: takeoff, search_target over the  │
+│  exact zone stated in the request, then land; NO TB3 step. Iris              │
+│  get_coordinates/search_target must NOT come before Iris takeoff.            │
+│  - dispatch_only: a single TB3 navigate_to step with explicit numeric x, y   │
+│  taken from the request; NO Iris step.                                       │
+│  - abort: stand down: Iris land and/or TB3 stop, nothing else.               │
+│                                                                              │
+│  Your previous plan was REJECTED (violations: no_target_fix). Produce a      │
+│  corrected plan using ONLY valid skill names and arguments and the correct   │
+│  workflow family and ordering.                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool iris_list_skills executed with result: Iris skills: takeoff, search_target, get_coordinates, land. search_target takes x_min, x_max, y_min, y_max (optional altitude, default 5.0)....[0m
+[32mTool tb3_list_skills executed with result: TB3 skills: navigate_to, stop. navigate_to takes {"target": "victim"} or explicit numeric x, y. Operational area: x in [-6.0, 10.0], y in [-6.0, 10.0]....[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"search_and_dispatch","steps":[{"robot":"iris","skill":  │
+│  "takeoff","args":{}},{"robot":"iris","skill":"search_target","args":{"x_mi  │
+│  n":-5.5,"x_max":5.5,"y_min":-5.5,"y_max":5.5}},{"robot":"tb3","skill":"nav  │
+│  igate_to","args":{"target":"victim"}}]}                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+    refused=True steps=3 err=9.886124661276634 t=17.9s
+wrote results_live_suite_20260810.json (20 missions)

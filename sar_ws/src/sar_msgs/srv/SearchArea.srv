@@ -1,0 +1,11 @@
+float64 x_min
+float64 x_max
+float64 y_min
+float64 y_max
+float64 altitude
+---
+bool found
+string message
+float64 victim_x
+float64 victim_y
+float64 victim_z

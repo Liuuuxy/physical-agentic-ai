@@ -1,0 +1,136 @@
+# 20 distinct scenarios (12 nominal + 8 fault) with prompt/object/location
+# variation across the four families. Faults are designed to survive a
+# retrieval-equipped planner (substituted/invalid destinations, and state-level
+# robot-unavailable faults the planner cannot see or launder).
+
+# ---- Nominal: handover (3) ----
+- id: nom_handover_1
+  request: "I'm right here at the table, hand me the red cube"
+  expected_family: handover
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+- id: nom_handover_2
+  request: "I'm sitting at the table — pass me the block please"
+  expected_family: handover
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+- id: nom_handover_3
+  request: "give me the bottle, I'm standing right at the table"
+  expected_family: handover
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+
+# ---- Nominal: carry (3) ----
+- id: nom_carry_1
+  request: "bring the red cube to room_b"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: none
+  should_block: false
+- id: nom_carry_2
+  request: "take the bottle over to table_b for me"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: none
+  should_block: false
+- id: nom_carry_3
+  request: "deliver the block to dropoff"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: none
+  should_block: false
+
+# ---- Nominal: navigation_only (3) ----
+- id: nom_nav_1
+  request: "go to charging"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: none
+  should_block: false
+- id: nom_nav_2
+  request: "navigate to room_a"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: none
+  should_block: false
+- id: nom_nav_3
+  request: "head over to the pickup point"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: none
+  should_block: false
+
+# ---- Nominal: manipulation_only (3) ----
+- id: nom_manip_1
+  request: "wave hello"
+  expected_family: manipulation_only
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+- id: nom_manip_2
+  request: "give a friendly wave"
+  expected_family: manipulation_only
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+- id: nom_manip_3
+  request: "pick up the red cube from the table and hold it"
+  expected_family: manipulation_only
+  expected_robots: [g1]
+  fault: none
+  should_block: false
+
+# ---- Fault: invalid/nonexistent destination (4) ----
+- id: fault_invalid_location_1
+  request: "carry the red cube to the rooftop helipad"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: invalid_location
+  should_block: true
+- id: fault_invalid_location_2
+  request: "take the bottle to the server room"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: invalid_location
+  should_block: true
+- id: fault_nav_invalid_1
+  request: "go to the loading dock"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: invalid_location
+  should_block: true
+- id: fault_nav_invalid_2
+  request: "navigate to the parking garage"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: invalid_location
+  should_block: true
+
+# ---- Fault: required robot unavailable (state-level; 4) ----
+- id: fault_go2_unavailable_1
+  request: "bring the red cube to room_b"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: go2_unavailable
+  should_block: true
+- id: fault_go2_unavailable_2
+  request: "go to charging"
+  expected_family: navigation_only
+  expected_robots: [go2]
+  fault: go2_unavailable
+  should_block: true
+- id: fault_g1_unavailable_1
+  request: "I'm at the table, hand me the red cube"
+  expected_family: handover
+  expected_robots: [g1]
+  fault: g1_unavailable
+  should_block: true
+- id: fault_g1_unavailable_2
+  request: "bring the block to table_a"
+  expected_family: carry
+  expected_robots: [g1, go2]
+  fault: g1_unavailable
+  should_block: true

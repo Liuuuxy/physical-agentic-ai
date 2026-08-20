@@ -1,0 +1,10 @@
+# Query the drone's onboard perception bridge.
+# Pass the drone's current world-frame position so the bridge can convert
+# image-relative offsets to world coordinates.
+float64 drone_x
+float64 drone_y
+---
+bool detected
+string semantic_text          # structured natural-language description
+float64 victim_x              # world frame; valid only when detected=true
+float64 victim_y

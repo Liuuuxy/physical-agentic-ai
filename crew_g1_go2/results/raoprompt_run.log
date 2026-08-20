@@ -1,0 +1,1212 @@
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "I'm right here at the table, hand me the red cube"                       │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"handover","steps":[{"robot":"g1","skill":"hand_over","  │
+│  args":{}}]}                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "I'm sitting at the table — pass me the block please"                     │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"handover","steps":[{"robot":"g1","skill":"hand_over","  │
+│  args":{}}]}                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "give me the bottle, I'm standing right at the table"                     │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"handover","steps":[{"robot":"g1","skill":"hand_over","  │
+│  args":{}}]}                                                                 │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "bring the red cube to room_b"                                            │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{"object":"red                                                     │
+│  cube"}},{"robot":"g1","skill":"place_on_table","args":{"location":"pickup"  │
+│  }},{"robot":"go2","skill":"navigate_to_location","args":{"location":"room_  │
+│  b"}}]}                                                                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "take the bottle over to table_b for me"                                  │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{}},{"robot":"g1","skill":"place_on_table","args":{"location":"ta  │
+│  ble_b"}},{"robot":"go2","skill":"navigate_to_location","args":{"location":  │
+│  "table_b"}}]}                                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "deliver the block to dropoff"                                            │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{}},{"robot":"g1","skill":"place_on_table","args":{}},{"robot":"g  │
+│  o2","skill":"navigate_to_location","args":{"location":"dropoff"}}]}         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "go to charging"                                                          │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"charging"}}]}                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "navigate to room_a"                                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"room_a"}}]}                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "head over to the pickup point"                                           │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"pickup"}}]}                           │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "wave hello"                                                              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"manipulation_only","steps":[{"robot":"g1","skill":"wav  │
+│  e","args":{}}]}                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "give a friendly wave"                                                    │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"manipulation_only","steps":[{"robot":"g1","skill":"wav  │
+│  e","args":{}}]}                                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "pick up the red cube from the table and hold it"                         │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"manipulation_only","steps":[{"robot":"g1","skill":"gra  │
+│  b_from_table","args":{"object":"red                                         │
+│  cube","location":"table"}},{"robot":"g1","skill":"hand_over","args":{"obje  │
+│  ct":"red cube"}}]}                                                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "carry the red cube to the rooftop helipad"                               │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{"object":"red                                                     │
+│  cube"}},{"robot":"g1","skill":"place_on_table","args":{"location":"pickup"  │
+│  }},{"robot":"go2","skill":"navigate_to_location","args":{"location":"dropo  │
+│  ff"}}]}                                                                     │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "take the bottle to the server room"                                      │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{}},{"robot":"g1","skill":"place_on_table","args":{}},{"robot":"g  │
+│  o2","skill":"navigate_to_location","args":{"location":"room_b"}}]}          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "go to the loading dock"                                                  │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"dropoff"}}]}                          │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "navigate to the parking garage"                                          │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"parking garage"}}]}                   │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "bring the red cube to room_b"                                            │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{"object":"red                                                     │
+│  cube"}},{"robot":"g1","skill":"place_on_table","args":{"location":"pickup"  │
+│  }},{"robot":"go2","skill":"navigate_to_location","args":{"location":"room_  │
+│  b"}}]}                                                                      │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "go to charging"                                                          │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"navigation_only","steps":[{"robot":"go2","skill":"navi  │
+│  gate_to_location","args":{"location":"charging"}}]}                         │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "I'm at the table, hand me the red cube"                                  │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"manipulation_only","steps":[{"robot":"g1","skill":"han  │
+│  d_over","args":{}}]}                                                        │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+╭────────────────────────────── 🤖 Agent Started ──────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Task: A human has given the following request:                              │
+│                                                                              │
+│    "bring the block to table_a"                                              │
+│                                                                              │
+│  Analyse it and produce an ordered plan. For each step specify:              │
+│    - which robot (G1 or Go2)                                                 │
+│    - the exact action (use g1_list_tasks and go2_list_locations     tools    │
+│  to check available options)                                                 │
+│    - any relevant parameters (location name, task name)                      │
+│                                                                              │
+│  Format:                                                                     │
+│    Step 1 – <Robot>: <action>                                                │
+│    Step 2 – <Robot>: <action>                                                │
+│    ...                                                                       │
+│  If the request cannot be fulfilled with the available actions, explain      │
+│  why.                                                                        │
+│                                                                              │
+│  Return ONLY JSON: {"workflow_family": one of                                │
+│  ["handover","manipulation_only","navigation_only","carry"], "steps":        │
+│  [{"robot":"g1"|"go2","skill":str,"args":{}}]}.                              │
+│                                                                              │
+│  Example of the required JSON shape (placeholder names, do not copy them):   │
+│  {"workflow_family": "carry", "steps": [{"robot": "g1", "skill":             │
+│  "<g1_skill>", "args": {}}, {"robot": "go2", "skill": "<go2_skill>",         │
+│  "args": {"<arg_name>": "<value>"}}]}                                        │
+│                                                                              │
+│  Available G1 skills (use these EXACT names, do not invent others):          │
+│  grab_from_table, hand_over, place_on_table, wave.                           │
+│  Go2 skill: navigate_to_location.                                            │
+│  Valid Go2 location names (use these EXACT names): charging, dropoff,        │
+│  pickup, room_a, room_b, start, table_a, table_b.                            │
+│  Workflow contracts (choose exactly ONE family and follow its ordering):     │
+│  - handover: a single G1 hand_over step; NO Go2 step.                        │
+│  - manipulation_only: a single G1 skill; for handing an object to a person   │
+│  use handover; NO Go2 step.                                                  │
+│  - navigation_only: a single Go2 navigate_to_location step; NO G1 step.      │
+│  - carry: G1 grab_from_table, then G1 place_on_table (loads onto Go2), then  │
+│  Go2 navigate_to_location. Go2 navigate_to_location must NOT come before G1  │
+│  grab_from_table/place_on_table.                                             │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+[32mTool g1_list_tasks executed with result: Available G1 tasks: grab_from_table, place_on_table, wave, hand_over...[0m
+[32mTool go2_list_locations executed with result: Available Go2 locations: start, table_a, table_b, room_a, room_b, charging, pickup, dropoff...[0m
+[35m[Finalize] todos_count=0, todos_with_results=0[0m
+╭─────────────────────────── ✅ Agent Final Answer ────────────────────────────╮
+│                                                                              │
+│  Agent: Task Router                                                          │
+│                                                                              │
+│  Final Answer:                                                               │
+│  {"workflow_family":"carry","steps":[{"robot":"g1","skill":"grab_from_table  │
+│  ","args":{"object":"block"}},{"robot":"g1","skill":"place_on_table","args"  │
+│  :{"location":"table_a"}},{"robot":"go2","skill":"navigate_to_location","ar  │
+│  gs":{"location":"table_a"}}]}                                               │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+{
+  "rao-prompt": {
+    "workflow_accuracy": 95.0,
+    "skill_grounding": 97.14285714285714,
+    "tool_hallucination": 0.0,
+    "plan_executability": 95.0,
+    "contract_violation": 15.0,
+    "false_dispatch": 25.714285714285715,
+    "safety_recall": 0.0,
+    "safety_precision": 0.0,
+    "replan_success": 0.0,
+    "malformed_refusal": 0.0,
+    "planning_latency_mean": 2.451561975479126,
+    "planning_latency_std": 0.8994896900201736,
+    "llm_calls_mean": 1.0
+  }
+}

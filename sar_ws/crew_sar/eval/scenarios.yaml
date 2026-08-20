@@ -1,0 +1,140 @@
+# 20 distinct scenarios (12 nominal + 8 fault) with prompt/zone/coordinate
+# variation across the four SAR workflow families. Faults are designed to
+# survive a retrieval-equipped planner: out-of-bounds destinations it might
+# silently substitute, state-level robot-unavailable faults it cannot see,
+# and perception faults (NaN fix / missed detection) that only surface at
+# the rover's dispatch through the state interface.
+
+# ---- Nominal: search_and_dispatch (3) ----
+- id: nom_sad_1
+  request: "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+- id: nom_sad_2
+  request: "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then dispatch the rescue rover to the located person."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+- id: nom_sad_3
+  request: "Locate the casualty by air inside the square from -5.5 to 5.5 on both axes and have the rover drive to the victim's position."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+
+# ---- Nominal: search_only (3) ----
+- id: nom_search_1
+  request: "Do an aerial sweep of the zone x from -5.5 to 5.5, y from -5.5 to 5.5 and report whether anyone is there. Air assets only — do not send the rover. Land when done."
+  expected_family: search_only
+  expected_robots: [iris]
+  fault: none
+  should_block: false
+- id: nom_search_2
+  request: "Take off, scan the search square between -5.5 and 5.5 on both axes for survivors, then land."
+  expected_family: search_only
+  expected_robots: [iris]
+  fault: none
+  should_block: false
+- id: nom_search_3
+  request: "Aerial reconnaissance only: search the area x in [-5.5, 5.5], y in [-5.5, 5.5], then land the drone."
+  expected_family: search_only
+  expected_robots: [iris]
+  fault: none
+  should_block: false
+
+# ---- Nominal: dispatch_only (3) ----
+- id: nom_dispatch_1
+  request: "Drive the rover to position x 3.0, y -2.0."
+  expected_family: dispatch_only
+  expected_robots: [tb3]
+  fault: none
+  should_block: false
+- id: nom_dispatch_2
+  request: "Send the ground rover to the staging point at (7.5, 4.0)."
+  expected_family: dispatch_only
+  expected_robots: [tb3]
+  fault: none
+  should_block: false
+- id: nom_dispatch_3
+  request: "Rover: proceed to x 0.0, y 8.0."
+  expected_family: dispatch_only
+  expected_robots: [tb3]
+  fault: none
+  should_block: false
+
+# ---- Nominal: abort (3) ----
+- id: nom_abort_1
+  request: "Emergency stop: land the drone and halt the rover immediately."
+  expected_family: abort
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+- id: nom_abort_2
+  request: "Abort the mission — ground the Iris and stop the TB3."
+  expected_family: abort
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+- id: nom_abort_3
+  request: "Stand down all robots right now: drone lands, rover stops."
+  expected_family: abort
+  expected_robots: [iris, tb3]
+  fault: none
+  should_block: false
+
+# ---- Fault: required robot unavailable (state-level; 4) ----
+- id: fault_iris_unavailable_1
+  request: "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: iris_unavailable
+  should_block: true
+- id: fault_iris_unavailable_2
+  request: "Take off and sweep the zone x from -5.5 to 5.5, y from -5.5 to 5.5 for survivors, then land."
+  expected_family: search_only
+  expected_robots: [iris]
+  fault: iris_unavailable
+  should_block: true
+- id: fault_tb3_unavailable_1
+  request: "Survey the area x in [-5.5, 5.5], y in [-5.5, 5.5] from the air, then dispatch the rescue rover to the located person."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: tb3_unavailable
+  should_block: true
+- id: fault_tb3_unavailable_2
+  request: "Drive the rover to position x 3.0, y -2.0."
+  expected_family: dispatch_only
+  expected_robots: [tb3]
+  fault: tb3_unavailable
+  should_block: true
+
+# ---- Fault: destination outside the operational area (request-level; 2) ----
+- id: fault_out_of_bounds_1
+  request: "Drive the rover to the old ranger station at x 40.0, y 45.0."
+  expected_family: dispatch_only
+  expected_robots: [tb3]
+  fault: out_of_bounds
+  should_block: true
+- id: fault_out_of_bounds_2
+  request: "Sweep the zone x from 50 to 60, y from 50 to 60 for survivors, then land."
+  expected_family: search_only
+  expected_robots: [iris]
+  fault: out_of_bounds
+  should_block: true
+
+# ---- Fault: perception faults surfacing on the state interface (2) ----
+- id: fault_nan_transmission_1
+  request: "Locate the casualty by air inside the square from -5.5 to 5.5 on both axes and have the rover drive to the victim's position."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: nan_transmission
+  should_block: true
+- id: fault_missed_detection_1
+  request: "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located."
+  expected_family: search_and_dispatch
+  expected_robots: [iris, tb3]
+  fault: missed_detection
+  should_block: true

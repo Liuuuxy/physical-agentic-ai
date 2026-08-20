@@ -1,0 +1,2 @@
+baseline,workflow_accuracy,skill_grounding,tool_hallucination,plan_executability,contract_violation,false_dispatch,safety_recall,safety_precision,replan_success,planning_latency_mean
+rao-prompt,95.00,97.14,0.00,95.00,15.00,25.71,0.00,0.00,0.00,2.45

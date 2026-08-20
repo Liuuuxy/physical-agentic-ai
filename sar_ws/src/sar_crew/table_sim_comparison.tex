@@ -1,0 +1,53 @@
+\begin{table}[t]
+\centering
+\caption{Quantitative comparison on the air--ground \textsc{Search-and-Dispatch}
+simulation. \textsc{Ours} is the full skill-grounded RAO system ($N{=}10$, nominal;
+$N{=}20$, fault-injected); \textsc{Skill-list} exposes skill names but removes the
+workflow contract and context propagation ($N{=}10$ nominal, $N{=}10$ fault);
+\textsc{LLM-only} removes all structured tools ($N{=}10$ each).
+All runs use Scenario~A. Cells marked -- were not applicable or not reached.}
+\label{tab:sim-comparison}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Metric & LLM-only & Skill-list & Ours \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Grounding \& assignment (nominal runs)}}\\
+\quad Skill grounding rate (\%) $\uparrow$       & 100  & 100  & 100 \\
+\quad Role assignment accuracy (\%) $\uparrow$   & 0    & 100$^\dagger$  & 100 \\
+\quad Tool-hallucination rate (\%) $\downarrow$  & 0$^\P$  & --   & 0   \\
+\quad Plan executability (\%) $\uparrow$         & 0    & 0$^\dagger$    & 100 \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Coordination \& safety (fault-injection runs)}}\\
+\quad Contract-violation rate (\%) $\downarrow$  & --   & 100$^\ddagger$ & 0   \\
+\quad False-dispatch rate (\%) $\downarrow$      & 0$^\S$ & 0$^\S$  & 25$^\|$ \\
+\quad Delivery error (m) $\downarrow$            & $8.71{\pm}2.26$ & $9.85{\pm}0.01$ & $\mathbf{3.69{\pm}4.11}$ \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Task outcome (nominal runs)}}\\
+\quad Mission success rate (\%) $\uparrow$       & 0    & 0    & \textbf{100} \\
+\quad Localization error (m) $\downarrow$        & $4.21{\pm}2.42$ & $0.00{\pm}0.00$ & $0.00{\pm}0.00$ \\
+\quad Delivery error (m) $\downarrow$            & $5.09{\pm}2.33$ & $9.85{\pm}0.01$ & $\mathbf{0.50{\pm}0.00}$ \\
+\midrule
+\multicolumn{4}{@{}l}{\textit{Efficiency (nominal runs, mean $\pm$ std)}}\\
+\quad LLM planning latency (s) $\downarrow$      & $8.0{\pm}0.9$   & $1.3{\pm}0.4$   & $1.5{\pm}0.4$     \\
+\quad Total mission time (s) $\downarrow$        & --              & $33.5{\pm}2.5$$^\#$ & $108.1{\pm}3.5$ \\
+\quad LLM calls / mission $\downarrow$           & 2               & 2               & 2                 \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+{\scriptsize
+$^\dagger$ Drone achieves 0.00\,m localization error and coordinates are within threshold,
+  but \texttt{tb3\_navigate\_to} is never called (0/10 runs) because the absent workflow
+  contract prevents coordinate context from reaching the ground agent.\\
+$^\ddagger$ Workflow contract removed by design in this ablation condition.\\
+$^\S$ Zero false dispatches because the rover is never dispatched (\textit{Skill-list})
+  or dispatched only after the LLM self-confirms the victim location (\textit{LLM-only}).\\
+$^\|$ All 5 positive cases arise from \textit{nan\_transmission} faults: the gate correctly
+  detects NaN-valued coordinates (${\uparrow}$100\% recall), but the LLM agent
+  simultaneously recovers an approximate position from the message text and dispatches,
+  bypassing the structured-channel gate.\\
+$^\P$ LLM produces no tool-call syntax; rate is 0/0 but we report 0 (no hallucinations observed).\\
+$^\#$ Shorter due to absent rover navigation phase, not faster end-to-end execution.
+}
+\end{table}

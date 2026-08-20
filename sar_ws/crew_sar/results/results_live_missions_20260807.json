@@ -1,0 +1,186 @@
+{
+  "nominal_rao": {
+    "trace": {
+      "request": "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located.",
+      "baseline": "rao",
+      "declared_family": "search_and_dispatch",
+      "plan": [
+        {
+          "robot": "iris",
+          "skill": "takeoff",
+          "args": {}
+        },
+        {
+          "robot": "iris",
+          "skill": "search_target",
+          "args": {
+            "x_min": -5.5,
+            "x_max": 5.5,
+            "y_min": -5.5,
+            "y_max": 5.5
+          }
+        },
+        {
+          "robot": "tb3",
+          "skill": "navigate_to",
+          "args": {
+            "target": "victim"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "step": {
+            "robot": "iris",
+            "skill": "takeoff",
+            "args": {}
+          },
+          "dispatched": true,
+          "grounded": true,
+          "result": "[LIVE] takeoff success=True: Reached altitude",
+          "violations": []
+        },
+        {
+          "step": {
+            "robot": "iris",
+            "skill": "search_target",
+            "args": {
+              "x_min": -5.5,
+              "x_max": 5.5,
+              "y_min": -5.5,
+              "y_max": 5.5
+            }
+          },
+          "dispatched": true,
+          "grounded": true,
+          "result": "[LIVE] VICTIM_COORDINATES: x=5.00, y=5.00 (world frame).",
+          "violations": []
+        },
+        {
+          "step": {
+            "robot": "tb3",
+            "skill": "navigate_to",
+            "args": {
+              "target": "victim"
+            }
+          },
+          "dispatched": true,
+          "grounded": true,
+          "result": "[LIVE] navigate_to(5.00, 5.00) success=True: Reached goal world=(5.00, 5.00)",
+          "violations": []
+        }
+      ],
+      "refused": false,
+      "replanned": false,
+      "llm_calls": 1,
+      "latency_s": 116.24747586250305,
+      "replan_attempted": false,
+      "parse_problems": []
+    },
+    "outcome": {
+      "victim_fix": [
+        5.0,
+        5.0
+      ],
+      "rover_final_pose": [
+        4.563627959503217,
+        4.940591172566929
+      ],
+      "delivery_error_m": 0.4403975096481571,
+      "mission_wall_time_s": 116.8
+    }
+  },
+  "nan_transmission_rao": {
+    "trace": {
+      "request": "A hiker is missing in the search zone x from -5.5 to 5.5, y from -5.5 to 5.5. Fly the drone over the zone and send the ground rover to the victim once located.",
+      "baseline": "rao",
+      "declared_family": "search_and_dispatch",
+      "plan": [
+        {
+          "robot": "iris",
+          "skill": "takeoff",
+          "args": {}
+        },
+        {
+          "robot": "iris",
+          "skill": "search_target",
+          "args": {
+            "x_min": -5.5,
+            "x_max": 5.5,
+            "y_min": -5.5,
+            "y_max": 5.5
+          }
+        },
+        {
+          "robot": "tb3",
+          "skill": "navigate_to",
+          "args": {
+            "target": "victim"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "step": {
+            "robot": "iris",
+            "skill": "takeoff",
+            "args": {}
+          },
+          "dispatched": true,
+          "grounded": true,
+          "result": "[LIVE] takeoff success=True: Reached altitude",
+          "violations": []
+        },
+        {
+          "step": {
+            "robot": "iris",
+            "skill": "search_target",
+            "args": {
+              "x_min": -5.5,
+              "x_max": 5.5,
+              "y_min": -5.5,
+              "y_max": 5.5
+            }
+          },
+          "dispatched": true,
+          "grounded": true,
+          "result": "[LIVE][FAULT:nan_transmission] Victim detected but coordinates corrupted (NaN transmission).",
+          "violations": []
+        },
+        {
+          "step": {
+            "robot": "tb3",
+            "skill": "navigate_to",
+            "args": {
+              "target": "victim"
+            }
+          },
+          "dispatched": false,
+          "grounded": true,
+          "result": "[REFUSED] no_target_fix",
+          "violations": [
+            "no_target_fix"
+          ]
+        }
+      ],
+      "refused": true,
+      "replanned": false,
+      "llm_calls": 2,
+      "latency_s": 42.77938723564148,
+      "replan_attempted": true,
+      "parse_problems": []
+    },
+    "outcome": {
+      "victim_fix": [
+        NaN,
+        NaN
+      ],
+      "rover_final_pose": [
+        -1.9707788392628496,
+        -1.9858256550591118
+      ],
+      "delivery_error_m": 9.868815415681702,
+      "mission_wall_time_s": 45.4
+    }
+  }
+}
