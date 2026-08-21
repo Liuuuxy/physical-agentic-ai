@@ -141,46 +141,6 @@ planner → orchestrator → adapters procedurally and there is no tool boundary
 a gate to defend. Its `crew_system/gate.py` is ported and unit-tested but has no
 production callers.
 
-## Does mock execution predict live execution?
-
-Applying the identical `eval/metrics.py` to the mock traces and the live Gazebo
-suite over the same 20 scenarios (`rao`):
-
-| metric | mock | live Gazebo |
-|---|---:|---:|
-| workflow_accuracy | 100.00 | 100.00 |
-| skill_grounding | 95.74 | 95.74 |
-| tool_hallucination | 0.00 | 0.00 |
-| plan_executability | 90.00 | 90.00 |
-| contract_violation | 0.00 | 0.00 |
-| false_dispatch | 0.00 | 0.00 |
-| safety_recall | 100.00 | 100.00 |
-| safety_precision | 100.00 | 100.00 |
-
-Per scenario, **0 of 20** differ on declared family, step count, grounded count,
-refusal decision, or per-step violation codes. Reproduce with
-`tools/compare_mock_vs_live.py`.
-
-## Scope and limitations
-
-1. **No hardware runs are recorded here.** Every `crew_g1_go2/results/*` artifact
-   is `mock` tier. The hardware code path is included and documented, but this
-   release reports no measurements from a physical robot.
-2. **`planning_latency_mean` is not comparable across tiers.** Both paths record
-   `latency_s = time.time() - t0` from *mission* start. Under mock, execution is
-   a stub, so the span is effectively planning time (~1.4 s). Under live Gazebo it
-   includes the drone flying and the rover driving (~40 s), tracking mission wall
-   time rather than planning. Compare latency only within the `mock` tier.
-3. **The mock/live agreement is n = 1 per scenario on each side.** Exact agreement
-   here is one draw matching one draw, not two distributions matching. Multi-seed
-   evidence exists only for the `mock` tier (`crew_g1_go2/results/`, 4 seeds).
-4. **One shipped artifact carries a wrong internal label.**
-   `results_live_ctxprompt_faults_20260815.json` records `"baseline": "rao"` in
-   every trace, but it is a `rao-prompt` run: `run_live_suite.py` hardcoded the
-   recorded label regardless of `--baseline`. Its traces have plans identical to
-   the `rao` suite but `refused: false`, the non-enforcing signature. The hardcode
-   is fixed in the shipped runner; the recorded file is left exactly as produced
-   and flagged in `sar_ws/crew_sar/results/README.md`.
 
 ## Layout
 
