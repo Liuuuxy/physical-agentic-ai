@@ -18,6 +18,28 @@ The same framework is instantiated on two systems:
 | Physical layer | real hardware, ROS 2 Humble | Gazebo Classic 11 + PX4 SITL |
 | Recorded evidence | mock execution | mock **and** live Gazebo |
 
+## Hardware demonstrations
+
+Both clips show the real Unitree G1 and Go2 executing plans produced by the
+system. Previews loop below; click through for the full clip.
+
+| G1 manipulation | G1 → Go2 handoff and delivery |
+|---|---|
+| ![G1 grasping a block from the table](g1_manipulation_preview.gif) | ![G1 loading a block onto the Go2, which carries it away](g1_go2_handoff_preview.gif) |
+| [full clip — 35 s, MP4](g1_manipulation.mp4) | [full clip — 41 s, MP4](g1_go2_handoff.mp4) |
+
+*Left:* the G1 receives a `grab_from_table` step, locates the block, and grasps
+it. *Right:* the G1 grasps and places the block into the Go2's carrier, and the
+Go2 navigates to the delivery location — the two-robot `carry` workflow, with
+the orchestrator gating each dispatch.
+
+Regions of both clips are deliberately blurred for anonymous review: a laptop
+screen showing developer paths and shell prompts, and a person's face. Audio and
+all recording metadata have been removed. No simulation videos are included —
+`sar_ws/crew_sar/run_video_rerun.py` can capture them from the Gazebo stack
+(Xvfb + gzclient + ffmpeg in a `sar-sim:video` container), but no recording was
+retained for this release.
+
 ## Start here
 
 Everything below runs offline: no API key, no ROS, no Gazebo, no robot. Takes
@@ -141,11 +163,56 @@ planner → orchestrator → adapters procedurally and there is no tool boundary
 a gate to defend. Its `crew_system/gate.py` is ported and unit-tested but has no
 production callers.
 
+## Does mock execution predict live execution?
+
+Applying the identical `eval/metrics.py` to the mock traces and the live Gazebo
+suite over the same 20 scenarios (`rao`):
+
+| metric | mock | live Gazebo |
+|---|---:|---:|
+| workflow_accuracy | 100.00 | 100.00 |
+| skill_grounding | 95.74 | 95.74 |
+| tool_hallucination | 0.00 | 0.00 |
+| plan_executability | 90.00 | 90.00 |
+| contract_violation | 0.00 | 0.00 |
+| false_dispatch | 0.00 | 0.00 |
+| safety_recall | 100.00 | 100.00 |
+| safety_precision | 100.00 | 100.00 |
+
+Per scenario, **0 of 20** differ on declared family, step count, grounded count,
+refusal decision, or per-step violation codes. Reproduce with
+`tools/compare_mock_vs_live.py`.
+
+## Scope and limitations
+
+1. **No hardware runs are recorded here.** Every `crew_g1_go2/results/*` artifact
+   is `mock` tier. The hardware code path is included and documented, but this
+   release reports no measurements from a physical robot.
+2. **`planning_latency_mean` is not comparable across tiers.** Both paths record
+   `latency_s = time.time() - t0` from *mission* start. Under mock, execution is
+   a stub, so the span is effectively planning time (~1.4 s). Under live Gazebo it
+   includes the drone flying and the rover driving (~40 s), tracking mission wall
+   time rather than planning. Compare latency only within the `mock` tier.
+   The live runner now records a separate `plan_latency_s` that times only the
+   LLM calls, but the artifacts shipped here predate that change and do not
+   contain it.
+3. **The mock/live agreement is n = 1 per scenario on each side.** Exact agreement
+   here is one draw matching one draw, not two distributions matching. Multi-seed
+   evidence exists only for the `mock` tier (`crew_g1_go2/results/`, 4 seeds).
+4. **One shipped artifact carries a wrong internal label.**
+   `results_live_ctxprompt_faults_20260815.json` records `"baseline": "rao"` in
+   every trace, but it is a `rao-prompt` run: `run_live_suite.py` hardcoded the
+   recorded label regardless of `--baseline`. Its traces have plans identical to
+   the `rao` suite but `refused: false`, the non-enforcing signature. The hardcode
+   has since been fixed, so re-running the live suite records the condition
+   correctly; the artifact here was produced before that and is left exactly as
+   recorded, flagged in `sar_ws/crew_sar/results/README.md`.
 
 ## Layout
 
 ```
 README.md  LICENSE  requirements.txt  .env.example
+media/                hardware demo clips (redacted) + looping previews
 tools/                compare_mock_vs_live.py
 
 crew_g1_go2/          real G1 + Go2
