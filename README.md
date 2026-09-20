@@ -243,13 +243,10 @@ MIT. See `LICENSE`.
 If you use this repository, please cite:
 
 ```bibtex
-@article{physicalagenticai2026,
+@article{liu2026physical,
   title={Physical Agentic AI: An Architecture for Orchestrating a Robot Crew with LLMs},
-  author={},
+  author={Liu, Xinyuan and Sadikoglu, Eren and Chatterjee, Riana and Senanayake, Ransalu},
   journal={arXiv preprint arXiv:2608.22657},
-  year={2026},
-  eprint={2608.22657},
-  archivePrefix={arXiv},
-  primaryClass={}
+  year={2026}
 }
 ```
