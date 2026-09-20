@@ -1,6 +1,6 @@
-# Retrieval-Augmented Orchestration for Multi-Robot Task Execution
+# Physical Agentic AI: An Architecture for Orchestrating a Robot Crew with LLMs
 
-*Anonymous supplementary material. Code and recorded results for the submitted paper.*
+*Paper: [Physical Agentic AI: An Architecture for Orchestrating a Robot Crew with LLMs (arXiv PDF)](https://arxiv.org/pdf/2608.22657.pdf)*
 
 An LLM **Mission Planner** emits a structured JSON plan over typed skill
 registries but never actuates. Declarative **workflow contracts** render the
@@ -11,22 +11,22 @@ replan.
 
 The same framework is instantiated on two systems:
 
-| | `crew_g1_go2/` | `sar_ws/` |
-|---|---|---|
-| Robots | Unitree G1 humanoid + Go2 quadruped | PX4/Iris quadrotor + TurtleBot3 rover |
-| Task | pick-and-deliver | air–ground search and rescue |
-| Physical layer | real hardware, ROS 2 Humble | Gazebo Classic 11 + PX4 SITL |
-| Recorded evidence | mock execution | mock **and** live Gazebo |
+|                   | `crew_g1_go2/`                      | `sar_ws/`                             |
+| ----------------- | ----------------------------------- | ------------------------------------- |
+| Robots            | Unitree G1 humanoid + Go2 quadruped | PX4/Iris quadrotor + TurtleBot3 rover |
+| Task              | pick-and-deliver                    | air–ground search and rescue          |
+| Physical layer    | real hardware, ROS 2 Humble         | Gazebo Classic 11 + PX4 SITL          |
+| Recorded evidence | mock execution                      | mock **and** live Gazebo              |
 
 ## Hardware demonstrations
 
 Both clips show the real Unitree G1 and Go2 executing plans produced by the
 system. Previews loop below; click through for the full clip.
 
-| G1 manipulation | G1 → Go2 handoff and delivery |
-|---|---|
+| G1 manipulation                                              | G1 → Go2 handoff and delivery                                |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![G1 grasping a block from the table](g1_manipulation_preview.gif) | ![G1 loading a block onto the Go2, which carries it away](g1_go2_handoff_preview.gif) |
-| [full clip — 35 s, MP4](g1_manipulation.mp4) | [full clip — 41 s, MP4](g1_go2_handoff.mp4) |
+| [full clip — 35 s, MP4](g1_manipulation.mp4)                 | [full clip — 41 s, MP4](g1_go2_handoff.mp4)                  |
 
 *Left:* the G1 receives a `grab_from_table` step, locates the block, and grasps
 it. *Right:* the G1 grasps and places the block into the Go2's carrier, and the
@@ -65,11 +65,11 @@ repository, without re-running anything.
 Three tiers produce the results here. Telling them apart is necessary to read
 any number in this repository correctly.
 
-| tier | what actually runs | entry point |
-|---|---|---|
-| `mock` | stub adapters. No physics, no hardware. | `CREW_SIM=1` / `SAR_SIM=1` |
+| tier          | what actually runs                                       | entry point                         |
+| ------------- | -------------------------------------------------------- | ----------------------------------- |
+| `mock`        | stub adapters. No physics, no hardware.                  | `CREW_SIM=1` / `SAR_SIM=1`          |
 | `live-gazebo` | Gazebo Classic 11 physics, PX4 SITL, real ROS 2 services | `sar_ws/crew_sar/run_live_suite.py` |
-| `hardware` | a real G1/Go2 over ROS 2 | `crew_g1_go2/run.sh`, `go2_only.sh` |
+| `hardware`    | a real G1/Go2 over ROS 2                                 | `crew_g1_go2/run.sh`, `go2_only.sh` |
 
 `CREW_SIM=1` and `SAR_SIM=1` are **not simulators**. They stub out actuation so
 the planning and dispatch layers can be measured without moving anything. The
@@ -81,25 +81,25 @@ directory's `README.md`.
 
 ## Reproducing the reported results
 
-| claim | artifact | tier |
-|---|---|---|
-| G1+Go2 four-condition comparison (`tab:hw-mock-comparison`) | `crew_g1_go2/results/results_4arm_*.summary.txt` — 4 seeds | `mock` |
-| Enforcement isolated from planning (held-plan ablation) | `crew_g1_go2/results/results_heldplan_20260806.summary.txt` | `mock` |
-| SAR four-condition comparison (`tab:sim-comparison`, planning rows) | `sar_ws/crew_sar/results/results_mock_4arm_20260807.{csv,txt}` | `mock` |
-| SAR end-to-end missions with physical outcomes | `sar_ws/crew_sar/results/results_live_suite_20260810.json` | `live-gazebo` |
-| Non-enforcing arm under injected faults | `sar_ws/crew_sar/results/results_live_ctxprompt_faults_20260815.json` | `live-gazebo` |
-| Original CrewAI baseline (`tab:ablation`), repeated runs | `sar_ws/src/sar_crew/*.csv`, `table_*.tex` — see `RESULTS.md` | `live-gazebo` |
-| Mock predicts live | `tools/compare_mock_vs_live.py` | both |
+| claim                                                        | artifact                                                     | tier          |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- |
+| G1+Go2 four-condition comparison (`tab:hw-mock-comparison`)  | `crew_g1_go2/results/results_4arm_*.summary.txt` — 4 seeds   | `mock`        |
+| Enforcement isolated from planning (held-plan ablation)      | `crew_g1_go2/results/results_heldplan_20260806.summary.txt`  | `mock`        |
+| SAR four-condition comparison (`tab:sim-comparison`, planning rows) | `sar_ws/crew_sar/results/results_mock_4arm_20260807.{csv,txt}` | `mock`        |
+| SAR end-to-end missions with physical outcomes               | `sar_ws/crew_sar/results/results_live_suite_20260810.json`   | `live-gazebo` |
+| Non-enforcing arm under injected faults                      | `sar_ws/crew_sar/results/results_live_ctxprompt_faults_20260815.json` | `live-gazebo` |
+| Original CrewAI baseline (`tab:ablation`), repeated runs     | `sar_ws/src/sar_crew/*.csv`, `table_*.tex` — see `RESULTS.md` | `live-gazebo` |
+| Mock predicts live                                           | `tools/compare_mock_vs_live.py`                              | both          |
 
 All evaluations use 20 scenarios (12 nominal + 8 fault) per condition. The four
 conditions isolate one ingredient per rung:
 
-| condition | registry in prompt | contracts in prompt | dispatch gate + replan |
-|---|:--:|:--:|:--:|
-| `llm-only` | – | – | – |
-| `skill-list` | ✓ | – | – |
-| `rao-prompt` | ✓ | ✓ | – |
-| `rao` | ✓ | ✓ | ✓ |
+| condition    | registry in prompt | contracts in prompt | dispatch gate + replan |
+| ------------ | :----------------: | :-----------------: | :--------------------: |
+| `llm-only`   |         –          |          –          |           –            |
+| `skill-list` |         ✓          |          –          |           –            |
+| `rao-prompt` |         ✓          |          ✓          |           –            |
+| `rao`        |         ✓          |          ✓          |           ✓            |
 
 `rao-prompt` vs `rao` separates what *prompted* contracts buy from what
 *enforcing* them buys.
@@ -141,13 +141,13 @@ which is what makes numbers comparable across systems.
 The remaining differences are domain substitution — robot names, skill names,
 SAR-specific faults:
 
-| module | diff lines | nature of the difference |
-|---|---:|---|
-| `crew_system/routers.py` | 6 | robot identifiers in the plan schema |
-| `crew_system/gate.py` | 26 | robot and skill names |
-| `crew_system/orchestrator.py` | 62 | robot names + SAR victim-fix binding check |
-| `eval/run_eval.py` | 17 | fault names, perception faults |
-| `eval/analyze.py` | 12 | fault names |
+| module                        | diff lines | nature of the difference                   |
+| ----------------------------- | ---------: | ------------------------------------------ |
+| `crew_system/routers.py`      |          6 | robot identifiers in the plan schema       |
+| `crew_system/gate.py`         |         26 | robot and skill names                      |
+| `crew_system/orchestrator.py` |         62 | robot names + SAR victim-fix binding check |
+| `eval/run_eval.py`            |         17 | fault names, perception faults             |
+| `eval/analyze.py`             |         12 | fault names                                |
 
 Violation vocabularies are identical except that SAR adds one state code,
 `NO_TARGET_FIX`, for a goal that does not exist at planning time (the rover's
@@ -168,16 +168,16 @@ production callers.
 Applying the identical `eval/metrics.py` to the mock traces and the live Gazebo
 suite over the same 20 scenarios (`rao`):
 
-| metric | mock | live Gazebo |
-|---|---:|---:|
-| workflow_accuracy | 100.00 | 100.00 |
-| skill_grounding | 95.74 | 95.74 |
-| tool_hallucination | 0.00 | 0.00 |
-| plan_executability | 90.00 | 90.00 |
-| contract_violation | 0.00 | 0.00 |
-| false_dispatch | 0.00 | 0.00 |
-| safety_recall | 100.00 | 100.00 |
-| safety_precision | 100.00 | 100.00 |
+| metric             |   mock | live Gazebo |
+| ------------------ | -----: | ----------: |
+| workflow_accuracy  | 100.00 |      100.00 |
+| skill_grounding    |  95.74 |       95.74 |
+| tool_hallucination |   0.00 |        0.00 |
+| plan_executability |  90.00 |       90.00 |
+| contract_violation |   0.00 |        0.00 |
+| false_dispatch     |   0.00 |        0.00 |
+| safety_recall      | 100.00 |      100.00 |
+| safety_precision   | 100.00 |      100.00 |
 
 Per scenario, **0 of 20** differ on declared family, step count, grounded count,
 refusal decision, or per-step violation codes. Reproduce with
@@ -236,3 +236,20 @@ sar_ws/               air-ground SAR simulation
 ## License
 
 MIT. See `LICENSE`.
+
+
+## Citation
+
+If you use this repository, please cite:
+
+```bibtex
+@article{physicalagenticai2026,
+  title={Physical Agentic AI: An Architecture for Orchestrating a Robot Crew with LLMs},
+  author={},
+  journal={arXiv preprint arXiv:2608.22657},
+  year={2026},
+  eprint={2608.22657},
+  archivePrefix={arXiv},
+  primaryClass={}
+}
+```
